@@ -1,0 +1,18 @@
+{
+  "name": "Locato",
+  "short_name": "Locato",
+  "description": "LatLngLocator - 輕量化網頁經緯度定位工具",
+  "start_url": ".",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#090F1C",
+  "theme_color": "#0095B8",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
