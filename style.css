@@ -15,24 +15,24 @@
   --border-radius-lg: 16px;
   --border-radius-xl: 24px;
   
-  /* Fubon Light Theme Variables */
-  --bg-app: #f4f7f6;             /* Fubon Neutral 200 */
-  --bg-panel: rgba(255, 255, 255, 0.75); /* Fubon Neutral 100 Glass */
+  /* Light Theme Variables */
+  --bg-app: #f4f7f6;             /* Neutral App background */
+  --bg-panel: rgba(255, 255, 255, 0.75); /* Panel background with glassmorphism */
   --bg-panel-hover: rgba(255, 255, 255, 0.85);
-  --bg-item: #ffffff;            /* Fubon Neutral 100 */
+  --bg-item: #ffffff;            /* Card item background */
   --bg-item-hover: #f1f5f9;
-  --text-primary: #1e293b;       /* Fubon Neutral 900 */
-  --text-secondary: #475569;     /* Fubon Neutral 700 */
-  --text-muted: #94a3b8;         /* Fubon Neutral 400 */
-  --border-color: #e2e8f0;       /* Fubon Neutral 300 */
+  --text-primary: #1e293b;       /* Primary text */
+  --text-secondary: #475569;     /* Secondary text */
+  --text-muted: #94a3b8;         /* Muted helper text */
+  --border-color: #e2e8f0;       /* Divider/Border color */
   --border-color-hover: rgba(0, 149, 184, 0.25);
   
-  --color-primary: #0095b8;      /* Fubon Blue */
+  --color-primary: #0095b8;      /* Primary Brand Color */
   --color-primary-hover: #0084a4;
   --color-primary-light: rgba(0, 149, 184, 0.08);
-  --color-success: #00a29d;      /* Fubon Green */
+  --color-success: #00a29d;      /* Success Brand Color */
   --color-success-bg: rgba(0, 162, 157, 0.1);
-  --color-danger: #ef4444;       /* Fubon Semantic Danger */
+  --color-danger: #ef4444;       /* Semantic Danger */
   --color-danger-light: rgba(239, 68, 68, 0.08);
   
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
@@ -45,23 +45,23 @@
   --glass-border: 1px solid rgba(255, 255, 255, 0.6);
 }
 
-/* Fubon Premium Dark Theme Overrides */
+/* Premium Dark Theme Overrides */
 [data-theme="dark"] {
-  --bg-app: #090f1c;             /* Fubon dark-bg-pure */
-  --bg-panel: rgba(18, 27, 46, 0.75); /* Fubon dark-bg-card Glass */
+  --bg-app: #090f1c;             /* Dark background */
+  --bg-panel: rgba(18, 27, 46, 0.75); /* Dark card Glass */
   --bg-panel-hover: rgba(18, 27, 46, 0.85);
-  --bg-item: #121b2e;            /* Fubon dark-bg-card */
+  --bg-item: #121b2e;            /* Dark card background */
   --bg-item-hover: #1e2e4a;
-  --text-primary: #f8fafc;       /* Fubon dark-text-main */
+  --text-primary: #f8fafc;       /* Dark text main */
   --text-secondary: #cbd5e1;
-  --text-muted: #94a3b8;         /* Fubon dark-text-sub */
-  --border-color: #1e2e4a;       /* Fubon dark-border */
+  --text-muted: #94a3b8;         /* Dark text sub */
+  --border-color: #1e2e4a;       /* Dark border */
   --border-color-hover: rgba(0, 149, 184, 0.35);
   
-  --color-primary: #0095b8;      /* Fubon Blue */
+  --color-primary: #0095b8;      /* Primary Brand Color */
   --color-primary-hover: #0084a4;
   --color-primary-light: rgba(0, 149, 184, 0.15);
-  --color-success: #00a29d;      /* Fubon Green */
+  --color-success: #00a29d;      /* Success Brand Color */
   --color-success-bg: rgba(0, 162, 157, 0.15);
   --color-danger: #f87171;
   --color-danger-light: rgba(248, 113, 113, 0.15);
@@ -959,29 +959,54 @@ header {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
+/* Panel toggle button (for folding panel on mobile, hidden on desktop) */
+.panel-toggle-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border-radius: 50%;
+  transition: background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-normal);
+}
+
+.panel-toggle-btn:hover {
+  background-color: var(--bg-item-hover);
+  color: var(--text-primary);
+}
+
 /* Mobile Responsiveness Rules */
 @media (max-width: 768px) {
   header {
-    padding: 0 16px;
-    height: 60px;
+    padding: 0 12px;
+    height: 56px;
   }
   
   .brand h1 {
-    font-size: 1rem;
+    display: none; /* Hide brand name on mobile to save horizontal space for search bar */
   }
 
   .brand span {
     display: none;
   }
+
+  .brand {
+    gap: 0;
+  }
   
   .search-container {
-    margin: 0 10px;
+    margin: 0 8px;
+    min-width: 140px;
   }
   
   .search-input {
-    font-size: 0.8rem;
-    padding-left: 36px;
-    height: 36px;
+    font-size: 16px; /* Prevents iOS auto-zoom */
+    padding-left: 38px;
+    height: 40px;
+    border-radius: var(--border-radius-lg);
   }
   
   .search-icon-btn {
@@ -994,21 +1019,55 @@ header {
   }
   
   .app-container {
-    flex-direction: column-reverse;
+    flex-direction: column;
   }
   
+  .panel-toggle-btn {
+    display: flex;
+  }
+
   .floating-coord-panel {
-    position: relative;
+    position: absolute;
+    left: 0;
     right: 0;
-    top: 0;
+    bottom: 0;
+    top: auto;
     width: 100%;
-    max-height: 50%;
-    box-shadow: none;
-    border-radius: 0;
+    max-height: 70%;
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.15);
+    border-radius: var(--border-radius-xl) var(--border-radius-xl) 0 0;
     border-top: 1px solid var(--border-color);
-    background-color: var(--bg-item);
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    background-color: var(--bg-panel);
     z-index: 9;
-    padding: 16px;
+    padding: 16px 20px 24px 20px;
+    transform: translateY(0);
+    transition: transform var(--transition-normal);
+  }
+
+  .floating-coord-panel.collapsed {
+    transform: translateY(calc(100% - 56px)); /* Only show the 56px header line */
+  }
+
+  .floating-coord-panel.collapsed .panel-toggle-btn {
+    transform: rotate(180deg); /* Rotate collapse chevron pointing up */
+  }
+
+  /* Transition for content hidden state */
+  .floating-coord-panel.collapsed .coord-display-box,
+  .floating-coord-panel.collapsed .copy-actions-container,
+  .floating-coord-panel.collapsed .address-info-box {
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  .floating-coord-panel .coord-display-box,
+  .floating-coord-panel .copy-actions-container,
+  .floating-coord-panel .address-info-box {
+    opacity: 1;
+    transition: opacity var(--transition-normal);
   }
 
   .history-drawer {
@@ -1020,14 +1079,17 @@ header {
     transform: translateX(-100%);
     border-radius: 0;
     max-height: 100%;
+    z-index: 15;
   }
 
   .layer-header-btn span {
-    display: none;
+    display: none; /* Hide button text on mobile action list */
   }
+  
   .layer-header-btn {
-    padding: 6px 10px;
+    padding: 8px 10px;
   }
+  
   .layer-switcher-header {
     margin-right: 4px;
   }

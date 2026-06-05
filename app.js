@@ -47,6 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const lngVal = document.getElementById('lng-val');
   const precisionSelect = document.getElementById('precision-select');
   const btnCopyLatlng = document.getElementById('btn-copy-latlng');
+  const panelToggleBtn = document.getElementById('panel-toggle-btn');
   const addressText = document.getElementById('address-text');
   
   const layerOsmBtn = document.getElementById('layer-osm-btn');
@@ -179,6 +180,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (address !== null) {
       updateAddressDisplay(address);
+    }
+
+    // Auto-expand mobile bottom coordinate panel on coordinate change
+    const coordPanel = document.querySelector('.floating-coord-panel');
+    if (coordPanel && coordPanel.classList.contains('collapsed')) {
+      coordPanel.classList.remove('collapsed');
+      const toggleIcon = document.querySelector('#panel-toggle-btn i');
+      if (toggleIcon && window.lucide) {
+        toggleIcon.setAttribute('data-lucide', 'chevron-down');
+        window.lucide.createIcons();
+      }
     }
   }
 
@@ -729,6 +741,22 @@ document.addEventListener('DOMContentLoaded', () => {
       clearSuggestions();
       searchInput.focus();
     });
+
+    // Mobile bottom coordinate panel toggle
+    if (panelToggleBtn) {
+      panelToggleBtn.addEventListener('click', () => {
+        const coordPanel = document.querySelector('.floating-coord-panel');
+        if (coordPanel) {
+          const isCollapsed = coordPanel.classList.toggle('collapsed');
+          const toggleIcon = panelToggleBtn.querySelector('i');
+          if (toggleIcon && window.lucide) {
+            toggleIcon.setAttribute('data-lucide', isCollapsed ? 'chevron-up' : 'chevron-down');
+            window.lucide.createIcons();
+          }
+          trackEvent('toggle_mobile_panel', { collapsed: isCollapsed });
+        }
+      });
+    }
 
     // Click outside search suggestions or history sidebar to close them
     document.addEventListener('click', (e) => {
