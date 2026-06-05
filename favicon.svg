@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" width="180" height="180">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0095B8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00A29D;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- Background Rounded Rect -->
+  <rect width="180" height="180" rx="40" fill="url(#grad)" />
+  <!-- Map Pin Path (Lucide Map-Pin Style, scaled to center) -->
+  <path d="M120 75c0 29.5-30 56.25-30 56.25S60 104.5 60 75a30 30 0 1 1 60 0z" fill="none" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="90" cy="75" r="10" fill="white" />
+</svg>

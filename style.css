@@ -120,6 +120,7 @@ body {
   color: var(--text-primary);
   width: 100vw;
   height: 100vh;
+  height: 100dvh; /* dynamic height for mobile safari toolbar shifting */
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -981,7 +982,7 @@ header {
 /* Mobile Responsiveness Rules */
 @media (max-width: 768px) {
   header {
-    padding: 0 12px;
+    padding: 0 8px;
     height: 56px;
   }
   
@@ -998,8 +999,8 @@ header {
   }
   
   .search-container {
-    margin: 0 8px;
-    min-width: 140px;
+    margin: 0 4px;
+    min-width: 100px;
   }
   
   .search-input {
@@ -1016,6 +1017,19 @@ header {
   .header-btn {
     width: 36px;
     height: 36px;
+  }
+
+  .header-actions {
+    gap: 6px; /* Shrink button spacing on mobile actions bar */
+  }
+
+  .layer-switcher-header {
+    margin-right: 0;
+    padding: 2px;
+  }
+
+  .layer-header-btn {
+    padding: 6px 8px; /* Compact padding for layer switcher tabs */
   }
   
   .app-container {
