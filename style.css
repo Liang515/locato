@@ -151,10 +151,12 @@ button, input, select {
 
 /* App Header Layout */
 header {
-  height: 64px;
+  padding-top: env(safe-area-inset-top, 0px);
+  height: calc(64px + env(safe-area-inset-top, 0px));
   background-color: var(--bg-item);
   border-bottom: 1px solid var(--border-color);
-  padding: 0 24px;
+  padding-left: 24px;
+  padding-right: 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -162,6 +164,12 @@ header {
   flex-shrink: 0;
   box-shadow: var(--shadow-sm);
   transition: background-color var(--transition-normal), border-color var(--transition-normal);
+}
+
+/* iOS PWA Standalone Mode adjustments */
+.ios-pwa header {
+  padding-top: max(44px, env(safe-area-inset-top));
+  height: calc(64px + max(44px, env(safe-area-inset-top)));
 }
 
 .brand {
@@ -713,8 +721,12 @@ header {
   pointer-events: auto;
 }
 
+/* History drawer header shifts down under PWA safe areas */
 .history-header {
-  padding: 18px 20px;
+  padding-top: calc(18px + env(safe-area-inset-top, 0px));
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 18px;
   border-bottom: 1px solid var(--border-color);
   display: flex;
   justify-content: space-between;
@@ -982,8 +994,15 @@ header {
 /* Mobile Responsiveness Rules */
 @media (max-width: 768px) {
   header {
-    padding: 0 8px;
-    height: 56px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: env(safe-area-inset-top, 0px);
+    height: calc(56px + env(safe-area-inset-top, 0px));
+  }
+  
+  .ios-pwa header {
+    padding-top: max(44px, env(safe-area-inset-top));
+    height: calc(56px + max(44px, env(safe-area-inset-top)));
   }
   
   .brand h1 {
