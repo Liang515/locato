@@ -166,12 +166,6 @@ header {
   transition: background-color var(--transition-normal), border-color var(--transition-normal);
 }
 
-/* iOS PWA Standalone Mode adjustments */
-.ios-pwa header {
-  padding-top: max(44px, env(safe-area-inset-top));
-  height: calc(64px + max(44px, env(safe-area-inset-top)));
-}
-
 .brand {
   display: flex;
   align-items: center;
@@ -1044,11 +1038,6 @@ header {
     padding-right: 8px;
     padding-top: env(safe-area-inset-top, 0px);
     height: calc(56px + env(safe-area-inset-top, 0px));
-  }
-  
-  .ios-pwa header {
-    padding-top: max(44px, env(safe-area-inset-top));
-    height: calc(56px + max(44px, env(safe-area-inset-top)));
   }
   
   .brand h1 {

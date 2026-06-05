@@ -220,9 +220,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await response.json();
       const address = data.display_name || `座標: ${lat.toFixed(4)}, ${lng.toFixed(4)}`;
       updateAddressDisplay(address);
+      return address;
     } catch (error) {
       console.error('Reverse geocoding error:', error);
-      updateAddressDisplay(`座標: ${lat.toFixed(activePrecision)}, ${lng.toFixed(activePrecision)} (地址查詢失敗)`);
+      const fallbackAddress = `座標: ${lat.toFixed(activePrecision)}, ${lng.toFixed(activePrecision)} (地址查詢失敗)`;
+      updateAddressDisplay(fallbackAddress);
+      return fallbackAddress;
     }
   }
 
@@ -237,16 +240,21 @@ document.addEventListener('DOMContentLoaded', () => {
     trackEvent('locate_user_start');
 
     navigator.geolocation.getCurrentPosition(
-      (position) => {
+      async (position) => {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
         
         map.setView([lat, lng], 16, { animate: true });
         updateCoords(lat, lng, true);
-        reverseGeocode(lat, lng);
         
-        showToast('已成功定位到您的目前位置！');
-        trackEvent('locate_user_success');
+        // Await reverse geocoding to get address details before saving
+        const address = await reverseGeocode(lat, lng);
+        
+        // Auto-save to history log directly
+        addToHistory(lat, lng, address);
+        
+        showToast('已定位並自動儲存至歷史紀錄！');
+        trackEvent('locate_user_success_saved');
         locateBtn.classList.remove('loading');
       },
       (err) => {

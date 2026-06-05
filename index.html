@@ -3,17 +3,6 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  
-  <!-- Detect iOS PWA Standalone Mode -->
-  <script>
-    (function() {
-      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-      const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
-      if (isIOS && isStandalone) {
-        document.documentElement.classList.add('ios-pwa');
-      }
-    })();
-  </script>
   <title>LatLngLocator | 經緯度定位記錄工具</title>
   <meta name="description" content="LatLngLocator - 專門為了高頻率、高效率記錄經緯度而設計的極簡地圖工具。支援點擊選點、地址搜尋、一鍵複製與歷史紀錄儲存。">
   
