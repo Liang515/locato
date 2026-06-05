@@ -972,6 +972,52 @@ header {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
+/* Floating Geolocation Button */
+.floating-locate-btn {
+  position: absolute;
+  left: 20px;
+  top: 96px; /* Align below zoom controls */
+  width: 34px;
+  height: 34px;
+  border-radius: var(--border-radius-md);
+  border: var(--glass-border);
+  background-color: var(--bg-item);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 8;
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-fast);
+}
+
+.floating-locate-btn:hover {
+  background-color: var(--bg-item-hover);
+  color: var(--color-primary);
+  transform: scale(1.05);
+}
+
+.floating-locate-btn:active {
+  transform: scale(0.95);
+}
+
+.floating-locate-btn i {
+  width: 18px;
+  height: 18px;
+  transition: transform var(--transition-normal);
+}
+
+.floating-locate-btn.loading i {
+  animation: locate-pulse 1.2s ease-in-out infinite alternate;
+  color: var(--color-primary);
+}
+
+@keyframes locate-pulse {
+  0% { transform: scale(0.85); opacity: 0.6; }
+  100% { transform: scale(1.15); opacity: 1; }
+}
+
 /* Panel toggle button (for folding panel on mobile, hidden on desktop) */
 .panel-toggle-btn {
   display: none;
@@ -1130,6 +1176,13 @@ header {
   .leaflet-control-zoom {
     margin-top: 16px !important;
     margin-left: 16px !important;
+  }
+
+  .floating-locate-btn {
+    left: 16px;
+    top: 100px; /* Align below mobile zoom controls */
+    width: 34px;
+    height: 34px;
   }
 
   .leaflet-control-attribution {

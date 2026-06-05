@@ -47,6 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const lngVal = document.getElementById('lng-val');
   const precisionSelect = document.getElementById('precision-select');
   const btnCopyLatlng = document.getElementById('btn-copy-latlng');
+  const locateBtn = document.getElementById('locate-btn');
   const panelToggleBtn = document.getElementById('panel-toggle-btn');
   const addressText = document.getElementById('address-text');
   
@@ -223,6 +224,51 @@ document.addEventListener('DOMContentLoaded', () => {
       console.error('Reverse geocoding error:', error);
       updateAddressDisplay(`座標: ${lat.toFixed(activePrecision)}, ${lng.toFixed(activePrecision)} (地址查詢失敗)`);
     }
+  }
+
+  // Geolocation features
+  function handleLocateUser() {
+    if (!navigator.geolocation) {
+      showToast('定位失敗：瀏覽器不支援定位功能');
+      return;
+    }
+
+    locateBtn.classList.add('loading');
+    trackEvent('locate_user_start');
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        
+        map.setView([lat, lng], 16, { animate: true });
+        updateCoords(lat, lng, true);
+        reverseGeocode(lat, lng);
+        
+        showToast('已成功定位到您的目前位置！');
+        trackEvent('locate_user_success');
+        locateBtn.classList.remove('loading');
+      },
+      (err) => {
+        let errMsg = '定位失敗，請稍後再試。';
+        if (err.code === err.PERMISSION_DENIED) {
+          errMsg = '定位失敗：請開啟瀏覽器定位權限。';
+        } else if (err.code === err.POSITION_UNAVAILABLE) {
+          errMsg = '定位失敗：無法偵測到位置，請確認 GPS 已開啟。';
+        } else if (err.code === err.TIMEOUT) {
+          errMsg = '定位失敗：連線逾時，請重新再試。';
+        }
+        
+        showToast(errMsg);
+        trackEvent('locate_user_error', { code: err.code });
+        locateBtn.classList.remove('loading');
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0
+      }
+    );
   }
 
   // --- Copy Features & Feedback Toast ---
@@ -680,6 +726,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Precision Dropdown Selector
     precisionSelect.addEventListener('change', handlePrecisionChange);
+
+    // Geolocation button click
+    if (locateBtn) {
+      locateBtn.addEventListener('click', handleLocateUser);
+    }
 
     // Map Layer Switchers
     layerOsmBtn.addEventListener('click', () => switchLayer('osm'));
