@@ -445,6 +445,24 @@ header {
   color: var(--text-primary) !important;
 }
 
+/* Custom Leaflet Marker Styling */
+.custom-leaflet-marker {
+  background: none !important;
+  border: none !important;
+}
+
+.modern-marker-pin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 4px 8px rgba(0, 149, 184, 0.25));
+  transition: transform var(--transition-normal);
+}
+
+.custom-leaflet-marker:hover .modern-marker-pin {
+  transform: scale(1.1) translateY(-3px);
+}
+
 /* Floating Coordination Panel (Right Sidebar) */
 .floating-coord-panel {
   position: absolute;

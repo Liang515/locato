@@ -121,14 +121,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Map Management ---
   function initMap() {
-    // Fix default Leaflet icon paths
-    delete L.Icon.Default.prototype._getIconUrl;
-    L.Icon.Default.mergeOptions({
-      iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-      iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-      shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-    });
-
     // Create Leaflet map
     map = L.map('map', {
       zoomControl: true,
@@ -140,8 +132,35 @@ document.addEventListener('DOMContentLoaded', () => {
     osmLayer.addTo(map);
     activeLayer = osmLayer;
 
+    // Define modern custom SVG marker icon
+    const modernMarkerIcon = L.divIcon({
+      html: `
+        <div class="modern-marker-pin">
+          <svg width="36" height="46" viewBox="0 0 32 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="pin-grad" x1="0" y1="0" x2="32" y2="42" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#0095B8" />
+                <stop offset="100%" stop-color="#00A29D" />
+              </linearGradient>
+              <filter id="pin-shadow" x="-4" y="-2" width="40" height="50" filterUnits="userSpaceOnUse">
+                <feDropShadow dx="0" dy="4" stdDeviation="3" flood-color="#090F1C" flood-opacity="0.3"/>
+              </filter>
+            </defs>
+            <g filter="url(#pin-shadow)">
+              <path d="M16 2C8.27 2 2 8.27 2 16c0 9.8 14 24 14 24s14-14.2 14-24c0-7.73-6.27-14-14-14zm0 19c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" fill="url(#pin-grad)"/>
+              <circle cx="16" cy="16" r="4.5" fill="#ffffff" />
+            </g>
+          </svg>
+        </div>
+      `,
+      className: 'custom-leaflet-marker',
+      iconSize: [36, 46],
+      iconAnchor: [18, 42]
+    });
+
     // Create marker
     marker = L.marker([DEFAULT_LAT, DEFAULT_LNG], {
+      icon: modernMarkerIcon,
       draggable: true
     }).addTo(map);
 
