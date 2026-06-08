@@ -1192,6 +1192,10 @@ header {
     height: 34px;
   }
 
+  .leaflet-bottom.leaflet-right {
+    bottom: 60px !important;
+  }
+
   .leaflet-control-attribution {
     margin-bottom: 4px !important;
   }
