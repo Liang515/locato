@@ -237,7 +237,61 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!response.ok) throw new Error('Network error');
       
       const data = await response.json();
-      const address = data.display_name || `座標: ${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+      
+      let address = '';
+      if (data.address) {
+        const addr = data.address;
+        const isTaiwan = addr.country_code === 'tw' || addr.country === '臺灣' || addr.country === 'Taiwan';
+        
+        if (isTaiwan) {
+          // Format for Taiwan (Largest to Smallest)
+          let state = addr.state || '';
+          let city = addr.city || '';
+          let county = addr.county || '';
+          
+          let countyCity = '';
+          if (state && (state.endsWith('市') || state.endsWith('縣'))) {
+            countyCity = state;
+          } else if (city && (city.endsWith('市') || city.endsWith('縣'))) {
+            countyCity = city;
+          } else if (county && (county.endsWith('市') || county.endsWith('縣'))) {
+            countyCity = county;
+          } else {
+            countyCity = state || city || county || '';
+          }
+          
+          if (countyCity === '臺灣' || countyCity === 'Taiwan') {
+            countyCity = '';
+          }
+          
+          let dist = addr.suburb || addr.district || addr.town || addr.city_district || '';
+          if (dist === countyCity) dist = '';
+          
+          let village = addr.village || addr.neighbourhood || addr.hamlet || '';
+          if (village === dist || village === countyCity) village = '';
+          
+          let road = addr.road || addr.street || addr.pedestrian || addr.path || '';
+          
+          let houseNum = addr.house_number || '';
+          if (houseNum && !houseNum.endsWith('號') && !isNaN(parseInt(houseNum.charAt(0)))) {
+            houseNum += '號';
+          }
+          
+          let landmark = addr.amenity || addr.building || addr.shop || addr.office || addr.tourism || addr.historic || addr.leisure || addr.place || '';
+          if (landmark === road || landmark === countyCity || landmark === dist) landmark = '';
+          
+          address = `${countyCity}${dist}${village}${road}${houseNum}`;
+          if (landmark) {
+            address += ` (${landmark})`;
+          }
+        }
+      }
+      
+      // Fallback if formatting was empty or not in Taiwan
+      if (!address) {
+        address = data.display_name || `座標: ${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+      }
+      
       updateAddressDisplay(address);
       return address;
     } catch (error) {
@@ -396,11 +450,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const lat = parseFloat(selected.lat);
     const lng = parseFloat(selected.lon);
-    const address = selected.display_name;
 
     // Pan map and update marker
     map.setView([lat, lng], 16, { animate: true });
-    updateCoords(lat, lng, true, address);
+    updateCoords(lat, lng, true);
+    reverseGeocode(lat, lng);
     
     // Sync search box
     searchInput.value = selected.display_name;
@@ -442,7 +496,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const address = item.display_name;
         
         map.setView([lat, lng], 16, { animate: true });
-        updateCoords(lat, lng, true, address);
+        updateCoords(lat, lng, true);
+        reverseGeocode(lat, lng);
         searchInput.value = address;
         clearSuggestions();
         trackEvent('direct_search_success', { query: query });
